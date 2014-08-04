@@ -1,0 +1,48 @@
+
+ body ,a{
+	background:#000000;
+	color:#00FF00;
+	font-family:monospace;
+	height: 100%;
+	text-decoration:  none;
+}
+
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
+	background:#0000ff;
+}
+
+.footer, .pusha {
+//	height: 20px; /* .push must be the same height as .footer */
+	//background:#aa00ff;
+}
+
+.accessGranted{
+	position:fixed;
+	top:200px;
+	background:#333;
+	padding:20px;
+	border:1px solid #999;
+	width:300px;
+	left:50%;
+	margin-left:-150px;
+	text-align:center;
+}
+
+.accessDenied{
+	position:fixed;
+	top:200px;
+	color:#F00;
+	background:#511;
+	padding:20px;
+	border:1px solid #F00;
+	width:300px;
+	left:50%;
+	margin-left:-150px;
+	text-align:center;
+}
+
