@@ -1,0 +1,421 @@
+.
+.
+.
+.
+.
+using System;
+using System.Drawing;
+using System.Collections;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Data;
+namespace C
+{
+	/// <summary>
+	/// WebLex - Web Indexing Program.
+	/// </summary>
+	public class frmMain : System.Windows.Forms.Form
+	{
+		internal System.Windows.Forms.ProgressBar pbLoadProgress;
+		internal System.Windows.Forms.StatusBar stsFooter;
+		internal System.Windows.Forms.StatusBarPanel StatusBarPanel1;
+		internal System.Windows.Forms.StatusBarPanel StatusBarPanel2;
+		internal System.Windows.Forms.Button btnStartIndexing;
+		internal System.Windows.Forms.TextBox txtText;
+		internal System.Windows.Forms.TextBox txtOpeningURL;
+		internal System.Windows.Forms.TreeView tvProgress;
+		internal System.Windows.Forms.Label lblOpeningURL;
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.Container components = null;
+
+		//Form Resize differentials
+		private float m_sngTVWidthDiff = 0;
+		private float m_sngTVHeightDIff = 0;
+		private float m_sngTextLeftDiff = 0;
+		private float m_sngTextWidthDiff = 0;
+		private float m_sngTextHeightDiff = 0;
+		private float m_sngBtnTopDiff = 0;
+		private float m_sngPBTopDiff = 0;
+		private float m_sngPBLeftDiff = 0;
+
+		//Web Crawler Class
+		private Charlotte.WebCrawler m_wcSpider = new Charlotte.WebCrawler();
+		private DataServices m_dsWebLex = new DataServices();
+		public frmMain()
+		{
+			//
+			// Required for Windows Form Designer support
+			//
+			InitializeComponent();
+			m_wcSpider.LoadProgress 
+				+= new Charlotte.WebCrawler.LoadProgressHandler
+				  (m_wcSpider_Load_Progress);
+			m_wcSpider.LoadStatus
+				+= new Charlotte.WebCrawler.LoadStatusHandler
+				  (m_wcSpider_LoadStatus);
+			m_wcSpider.NewPage 
+				+= new Charlotte.WebCrawler.NewPageHandler
+				  (m_wcSpider_NewPage);
+			m_wcSpider.PageComplete
+				+= new Charlotte.WebCrawler.PageCompleteHandler
+				  (m_wcSpider_PageComplete);
+			m_wcSpider.Queuing
+				+= new Charlotte.WebCrawler.QueuingHandler
+				  (m_wcSpider_Queueing);
+		} //frmMain()
+
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		protected override void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				if (components != null) 
+				{
+					components.Dispose();
+				}
+			}
+			base.Dispose( disposing );
+		} //Dispose
+
+		#region Windows Form Designer generated code
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
+			this.pbLoadProgress = new System.Windows.Forms.ProgressBar();
+			this.stsFooter = new System.Windows.Forms.StatusBar();
+			this.StatusBarPanel1 = new System.Windows.Forms.StatusBarPanel();
+			this.StatusBarPanel2 = new System.Windows.Forms.StatusBarPanel();
+			this.btnStartIndexing = new System.Windows.Forms.Button();
+			this.txtText = new System.Windows.Forms.TextBox();
+			this.txtOpeningURL = new System.Windows.Forms.TextBox();
+			this.tvProgress = new System.Windows.Forms.TreeView();
+			this.lblOpeningURL = new System.Windows.Forms.Label();
+			((System.ComponentModel.ISupportInitialize)(this.StatusBarPanel1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.StatusBarPanel2)).BeginInit();
+			this.SuspendLayout();
+			// 
+			// pbLoadProgress
+			// 
+			this.pbLoadProgress.Location = new System.Drawing.Point(843, 590);
+			this.pbLoadProgress.Name = "pbLoadProgress";
+			this.pbLoadProgress.Size = new System.Drawing.Size(88, 11);
+			this.pbLoadProgress.TabIndex = 17;
+			// 
+			// stsFooter
+			// 
+			this.stsFooter.Location = new System.Drawing.Point(0, 584);
+			this.stsFooter.Name = "stsFooter";
+			this.stsFooter.Panels.AddRange(new System.Windows.Forms.StatusBarPanel[] {
+																						 this.StatusBarPanel1,
+																						 this.StatusBarPanel2});
+			this.stsFooter.ShowPanels = true;
+			this.stsFooter.Size = new System.Drawing.Size(952, 22);
+			this.stsFooter.TabIndex = 18;
+			// 
+			// StatusBarPanel1
+			// 
+			this.StatusBarPanel1.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
+			this.StatusBarPanel1.Width = 836;
+			// 
+			// btnStartIndexing
+			// 
+			this.btnStartIndexing.Location = new System.Drawing.Point(16, 544);
+			this.btnStartIndexing.Name = "btnStartIndexing";
+			this.btnStartIndexing.Size = new System.Drawing.Size(96, 32);
+			this.btnStartIndexing.TabIndex = 16;
+			this.btnStartIndexing.Text = "&Start Indexing";
+			this.btnStartIndexing.Click += new System.EventHandler(this.btnStartIndexing_Click);
+			// 
+			// txtText
+			// 
+			this.txtText.Location = new System.Drawing.Point(496, 40);
+			this.txtText.Multiline = true;
+			this.txtText.Name = "txtText";
+			this.txtText.Size = new System.Drawing.Size(448, 496);
+			this.txtText.TabIndex = 15;
+			this.txtText.Text = "";
+			// 
+			// txtOpeningURL
+			// 
+			this.txtOpeningURL.Location = new System.Drawing.Point(88, 8);
+			this.txtOpeningURL.Name = "txtOpeningURL";
+			this.txtOpeningURL.Size = new System.Drawing.Size(400, 20);
+			this.txtOpeningURL.TabIndex = 14;
+			this.txtOpeningURL.Text = "http://www.bbc.co.uk";
+			// 
+			// tvProgress
+			// 
+			this.tvProgress.ImageIndex = -1;
+			this.tvProgress.Location = new System.Drawing.Point(8, 40);
+			this.tvProgress.Name = "tvProgress";
+			this.tvProgress.SelectedImageIndex = -1;
+			this.tvProgress.Size = new System.Drawing.Size(480, 496);
+			this.tvProgress.TabIndex = 13;
+			// 
+			// lblOpeningURL
+			// 
+			this.lblOpeningURL.AutoSize = true;
+			this.lblOpeningURL.Location = new System.Drawing.Point(8, 11);
+			this.lblOpeningURL.Name = "lblOpeningURL";
+			this.lblOpeningURL.Size = new System.Drawing.Size(76, 13);
+			this.lblOpeningURL.TabIndex = 12;
+			this.lblOpeningURL.Text = "Opening URL:";
+			// 
+			// frmMain
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+			this.ClientSize = new System.Drawing.Size(952, 606);
+			this.Controls.AddRange(new System.Windows.Forms.Control[] {
+																		  this.pbLoadProgress,
+																		  this.stsFooter,
+																		  this.btnStartIndexing,
+																		  this.txtText,
+																		  this.txtOpeningURL,
+																		  this.tvProgress,
+																		  this.lblOpeningURL});
+			this.Name = "frmMain";
+			this.Text = "WebLex – Web Indexer";
+			this.Resize += new System.EventHandler(this.frmMain_Resize);
+			this.Closing += new System.ComponentModel.CancelEventHandler(this.frmMain_Closing);
+			this.Load += new System.EventHandler(this.frmMain_Load);
+			this.Closed += new System.EventHandler(this.frmMain_Closed);
+			((System.ComponentModel.ISupportInitialize)(this.StatusBarPanel1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.StatusBarPanel2)).EndInit();
+			this.ResumeLayout(false);
+
+		}
+		#endregion
+
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		[STAThread]
+		static void Main() 
+		{
+			Application.Run(new frmMain());
+		} //Main
+	
+		private void SetResizeVars()
+		{
+			this.Show();
+			m_sngTVWidthDiff = this.Width / 2 - tvProgress.Width;
+			m_sngTVHeightDIff = this.Height - tvProgress.Height;
+			m_sngTextWidthDiff = this.Width / 2 - txtText.Width;
+			m_sngTextLeftDiff = txtText.Left - this.Width / 2;
+			m_sngTextHeightDiff = this.Height - txtText.Height;
+			m_sngBtnTopDiff = this.Height - btnStartIndexing.Top;
+			m_sngPBTopDiff = this.Height - pbLoadProgress.Top;
+			m_sngPBLeftDiff = this.Width - pbLoadProgress.Left;
+		} //SetResizeVars
+
+		private void frmMain_Load(object sender, System.EventArgs e)
+		{
+			if (! (m_dsWebLex.Connected))
+					btnStartIndexing.Enabled = false;
+				else
+				{
+					txtOpeningURL.Text 
+						= m_dsWebLex.GetSetting(Application.ProductName, 
+						this.Name, txtOpeningURL.Name, @"http://www.bbc.co.uk");
+
+					//Set Includes, Excludes if includes.txt, excludes.txt present
+					string strIncludesFile = Application.StartupPath + "\\" + "Includes.txt";
+					string strExcludesFile = Application.StartupPath + "\\" + "Excludes.txt";
+					m_wcSpider.SetIncludes(LoadArrayFromFile(strIncludesFile));
+					m_wcSpider.SetExcludes(LoadArrayFromFile(strExcludesFile));
+				}
+		} //frmMain_Load
+
+		private TreeNode SetParentNode(TreeView tvSet, string strURL)
+		{
+			//Locate or add the Parent URL entry in the Treeview Control 
+			TreeNode nodParent= FindNodeByValue(tvSet, strURL);
+			if (nodParent == null)
+			{
+					nodParent = tvSet.Nodes.Add(strURL);
+					nodParent.ForeColor = System.Drawing.Color.Blue;
+			}
+			return(nodParent);
+		} //SetParentNode
+
+		private TreeNode FindNodeByValue
+			(System.Windows.Forms.TreeView tvParent, string strValue) 
+		{
+			foreach (TreeNode nodChild in tvParent.Nodes)
+				if (nodChild.Text == strValue)
+					return(nodChild);
+				else
+				{
+					TreeNode nodResult = FindNodeByValue(nodChild, strValue);
+					if (nodResult != null)
+						return(nodResult);
+				}
+			return(null);
+		}
+		private TreeNode FindNodeByValue(TreeNode nodParent, string strValue)
+		{
+			foreach (TreeNode nodChild in nodParent.Nodes)
+			{
+				if (nodChild.Text == strValue)
+				{
+					return (nodChild);
+				}
+				else
+				{
+					TreeNode nodResult = FindNodeByValue(nodChild, strValue);
+					if (nodResult != null)
+						return(nodResult);
+				}
+			}
+			return(null);
+		} //FindNodeByValue
+
+		private void m_wcSpider_LoadStatus(string URL, string Description) 
+		{
+		    try
+			{
+				stsFooter.Panels[0].Text = Description + " " + URL;
+			}
+			catch {}
+		} //m_wcSpider_LoadStatus  
+
+		private void m_wcSpider_Queueing(string URL, int Level, string[] HRefs)
+		{
+			try
+			{
+				TreeNode nodParent;
+				if (Level > m_wcSpider.MaxLevel)
+					nodParent = null;
+				else
+					nodParent = SetParentNode(tvProgress, URL);
+				int i = 0;
+				for (i = 0; i < HRefs.Length; i++)
+				{
+					//Add en entry for each href 
+					TreeNode nodChild;
+					if (nodParent == null)
+						nodChild = tvProgress.Nodes.Add(HRefs[i]);
+					else
+						nodChild = nodParent.Nodes.Add(HRefs[i]);
+
+					nodChild.ForeColor = System.Drawing.Color.Blue;
+				} //(Level > m_wcSpider.MaxLevel)
+			}
+			catch {}
+		} //m_wcSpider_Queueing
+
+		private void m_wcSpider_PageComplete(string URL, int ReturnCode)
+		{
+			try
+			{
+				TreeNode nodComplete = FindNodeByValue(this.tvProgress, URL);
+				if (nodComplete != null)
+				{
+					if (ReturnCode == 0)
+						nodComplete.ForeColor = System.Drawing.Color.Green;
+					else 
+						nodComplete.ForeColor = System.Drawing.Color.Red;
+				}
+				txtOpeningURL.Text = URL;
+			}
+			catch {}
+		} //m_wcSpider_PageComplete
+
+		private void m_wcSpider_NewPage(string URL, Charlotte.HTMLPage Page, 
+			int Level, ref bool NoFollow)
+		{
+			try
+			{
+				txtText.Text = Page.Text;
+				if (m_dsWebLex.WasIndexed(URL, 
+					DateTime.Parse(Page.LastModified))) 
+					NoFollow = true;
+				else
+					if (!(Page.NoIndex))
+				{
+					stsFooter.Panels[0].Text = "Indexing: " + URL;
+					m_dsWebLex.IndexContent
+						(Page.Title, Page.URL, Page.Text);
+				}
+			}
+			catch {}
+		} //m_wcSpider_NewPage
+
+		private void m_wcSpider_Load_Progress(string URL, long Maximum, long Value) 
+		{
+			try
+			{
+				int intMaximum = (int) Maximum;
+				int intValue = (int) Value;
+				if ((intMaximum < 0)  
+					| (intValue < 0)
+					| intMaximum == intValue)
+				{
+					intMaximum = 0;
+					intValue = 0;
+				}
+				pbLoadProgress.Value = 0;
+				pbLoadProgress.Maximum = intMaximum;
+				pbLoadProgress.Minimum = 0;
+				pbLoadProgress.Value = intValue;
+			}
+			catch {}
+			Application.DoEvents();
+		} //m_wcSpider_Load_Progress
+
+		private void frmMain_Closed(object sender, System.EventArgs e)
+		{
+			Application.Exit();
+		} //frmMain_Closed
+
+		private void btnStartIndexing_Click(object sender, System.EventArgs e)
+		{
+		   Cursor.Current 
+				= Cursors.AppStarting;
+			btnStartIndexing.Enabled = false;
+			m_wcSpider.CrawlURL(txtOpeningURL.Text);
+			Cursor.Current  
+				= Cursors.Default;
+			MessageBox.Show("Done");
+
+		} //btnStartIndexing_Click
+
+    //LoadArrayFromFile - Load Array from File
+    private string[] LoadArrayFromFile(string strFileName)
+	{
+		return(null);
+	}
+
+	private bool bBeenHere = false;
+	private void frmMain_Resize(object sender, System.EventArgs e)
+	{
+		if (! bBeenHere)  
+		{
+			bBeenHere = true;
+			SetResizeVars();
+		}
+		tvProgress.Width = this.Width / 2 - (int) m_sngTVWidthDiff;
+		tvProgress.Height = this.Height - (int)m_sngTVHeightDIff;
+		txtText.Left = this.Width / 2 + (int) m_sngTextLeftDiff;
+		txtText.Width = this.Width / 2 - (int) m_sngTextWidthDiff;
+		txtText.Height = this.Height - (int) m_sngTextHeightDiff;
+		btnStartIndexing.Top = this.Height - (int) m_sngBtnTopDiff;
+		pbLoadProgress.Top = this.Height - (int) m_sngPBTopDiff;
+		pbLoadProgress.Left = this.Width - (int) m_sngPBLeftDiff;
+	}  
+
+		private void frmMain_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			m_dsWebLex.SaveSetting(Application.ProductName, this.Name, txtOpeningURL.Name, txtOpeningURL.Text);
+			m_wcSpider.Dispose();
+		}
+
+	} //frmMain : System.Windows.Forms.Form
+} //namespace
