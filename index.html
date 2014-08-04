@@ -1,0 +1,131 @@
+<!DOCTYPE HTML> 
+
+<html lang="en"> 
+
+<!--
+*(c) Copyright 2011 Simone Masiero. Some Rights Reserved. 
+*(c) Copyright 2014 Aniket Kudale. For Added Features *Changeble Background Color *Selectable Source Codes
+*This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License
+-->
+
+<style type="text/css">
+* {/* for demo only*/
+    margin:0px;
+    padding:0px
+}
+html, body {
+    height:100%;/* needed to base 100% height on something known*/
+   // text-align:center;
+}
+.outer {
+    //width:760px;
+    //background:#ffffcc;
+    margin:auto;
+    min-height:100%;
+    margin-top:0px;/*footer height - this drags the outer 40px up through the top of the monitor */
+    text-align:left;
+}
+* html .outer {
+    height:100%
+}
+#header {
+  //  background:red;
+    border-top:40px solid #fff; /* soak up negative margin and allows header to start at top of page*/
+}
+.footer {/* footer now sits at bottom of window*/
+  //  background:red;
+    //width:760px;
+    margin:auto;
+    height:40px;/* must match negative margin of #outer */
+    clear:both;
+}
+
+</style>
+
+	<head> 
+
+		<meta charset="utf-8"> 
+
+		<title>Bhakalya Typer</title>
+
+		<link href="style.css" rel="stylesheet" type="text/css" /> 
+
+		<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js' type='text/javascript'></script> 
+
+		<script src='script.js' type='text/javascript'></script> 
+
+		<script type='text/javascript'>
+
+			Typer.speed=5;
+
+			Typer.file='code.txt';
+	
+			//codeType();
+
+			Typer.init();
+
+		</script>
+
+	</head> 
+
+	<body> 
+		
+		<div id='console' class="outer">Press 'F11' & Just Start Typing Anything</div>
+        <div id='menu' class="footer">
+        <table id="cTable" width="100%">
+     
+     
+     	<tr colspan="2">
+           	<td>
+         		Select Background Color: 
+         		<select id="ccolor">
+					<option value="black">Black</option>
+					<option value="white">White</option>
+					<option value="dark blue">Dark Blue</option>
+					<option value="gray">Gray</option>
+					<option value="indigo">Indigo</option>
+				</select>
+				
+				Select Code Type: 
+         		<select id="code">
+					<option value="cpp"onclick="codeType();">C/C++</option>
+					<option value="javascript" onclick="codeType();">HTML/JavaScript</option>
+					<option value="java" onclick="codeType();">Java</option>
+					<option value="php" onclick="codeType();">PHP</option>
+					<option value="css" onclick="codeType();">CSS</option>
+					<option value="ruby" onclick="codeType();">Ruby</option>
+					<option value="cs" onclick="codeType();">C#</option>
+				</select>
+								
+            <button type="button" value="Go" onclick="">Music</button>
+          </td>
+          <td>               	        	
+          	</td>
+          </tr>
+		<td>
+          <tr>
+          	<td>
+          	 Ttyper V1.0  Inspired by HackerTyper
+          	 </td>
+           </tr>
+           <tr> 
+           	<td>    	
+         	 Added Features: Change Background Color! 
+         	 </td>          		 
+            </tr>
+            <tr>
+            	<td>
+         	 Got new feature! Contribute to this hack@ttyper.co.nf  
+         	 </td>	
+         	 </tr>        		 
+         
+         </td>	
+          
+                  
+
+        </table>
+        
+          </div>
+		</body>
+
+</html>
