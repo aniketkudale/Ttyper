@@ -154,44 +154,34 @@ var Typer={
 }
 
 
-function codeType() // New Feature By Aniket Kudale
-{
-	//Typer.file = 'code.txt';
+function codeType(type){
 	var ty = document.getElementById("code").value;
-	if(ty=="javascript")
-	{
+	if(type === "javascript"){
 		Typer.file = 'code_hj.txt';
 		
 	}
-	else if(ty=="java")
-	{
+	else if(type === "java"){
 		Typer.file = 'code_java.txt';
 		
 	}
-	else if(ty=="php")
-	{
+	else if(type === "php"){
 		Typer.file = 'code_php.txt';
 		
 	}
-	else if(ty=="css")
-	{
+	else if(type === "css"){
 		Typer.file = 'code_css.txt';
 		
 	}
-	else if(ty=="ruby")
-	{
+	else if(type === "ruby"){
 		Typer.file = 'code_ruby.txt';
 		
 	}
-	else if(ty=="cs")
-	{
+	else if(type === "cs"){
 		Typer.file = 'code_cs.txt';
 		
 	}
-	else
-	{
+	else{
 		Typer.file = 'code.txt';
-		
 	}
 	
 	//Reset i.e new load
